@@ -1,6 +1,5 @@
 package com.tt_tcs.crucible.util;
 
-import com.tt_tcs.crucible.CrucibleMain;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,15 +39,15 @@ public final class UpdateChecker {
                 }
 
                 StringBuilder sb = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
                     String line;
                     while ((line = br.readLine()) != null) sb.append(line);
                 }
                 String json = sb.toString();
 
-                // Extremely small JSON parse: grab "tag_name" and "html_url"
-                latestTag = match(json, "\"tag_name\"\s*:\s*\"([^\"]+)\"");
-                latestUrl = match(json, "\"html_url\"\s*:\s*\"([^\"]+)\"");
+                latestTag = match(json, "\"tag_name\"\\s*:\\s*\"([^\"]+)\"");
+                latestUrl = match(json, "\"html_url\"\\s*:\\s*\"([^\"]+)\"");
 
                 checked = true;
             } catch (Exception ignored) {
@@ -64,12 +63,41 @@ public final class UpdateChecker {
     }
 
     public boolean hasUpdate(JavaPlugin plugin) {
-        if (!checked) return false;
-        if (latestTag == null) return false;
+        if (!checked || latestTag == null) return false;
 
-        String current = plugin.getDescription().getVersion();
-        // If versions match exactly, no update. Otherwise, notify admins.
-        return !latestTag.equalsIgnoreCase(current) && !("v" + current).equalsIgnoreCase(latestTag);
+        int[] current = parseSemver(normalize(plugin.getDescription().getVersion()));
+        int[] latest = parseSemver(normalize(latestTag));
+
+        if (current == null || latest == null) return false;
+
+        if (latest[0] != current[0]) return latest[0] > current[0];
+        if (latest[1] != current[1]) return latest[1] > current[1];
+        return latest[2] > current[2];
+    }
+
+    private static String normalize(String v) {
+        if (v == null) return null;
+        v = v.trim();
+        if (v.startsWith("v") || v.startsWith("V")) {
+            v = v.substring(1);
+        }
+        return v;
+    }
+
+    private static int[] parseSemver(String v) {
+        if (v == null) return null;
+        String[] parts = v.split("\\.");
+        if (parts.length < 3) return null;
+
+        try {
+            return new int[] {
+                    Integer.parseInt(parts[0]),
+                    Integer.parseInt(parts[1]),
+                    Integer.parseInt(parts[2])
+            };
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public String getLatestTag() {
