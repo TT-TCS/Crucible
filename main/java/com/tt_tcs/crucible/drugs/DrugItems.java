@@ -25,7 +25,7 @@ public class DrugItems {
     // ==================== WEED ====================
 
     public static final ItemStack WEED_SEEDS = ItemUtil.createCustomItem(
-            Material.WHEAT_SEEDS,
+            Material.COCOA_BEANS,
             "§aWeed Seeds",
             "weed_seeds",
             "weed",
@@ -67,7 +67,7 @@ public class DrugItems {
     // ==================== COCAINE ====================
 
     public static final ItemStack COCA_SEEDS = ItemUtil.createCustomItem(
-            Material.COCOA_BEANS,
+            Material.WHEAT_SEEDS,
             "§fCoca Seeds",
             "coca_seeds",
             "cocaine",
