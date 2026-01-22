@@ -425,7 +425,7 @@ public class DrugUsing implements Listener {
                 Location loc = player.getLocation().add(0, 1.0, 0);
                 player.getWorld().spawnParticle(Particle.DUST, loc, 14, 0.25, 0.25, 0.25, 0.01,
                         new Particle.DustOptions(Color.fromRGB(220, 220, 220), 1.2f));
-                player.getWorld().playSound(loc, Sound.ITEM_LEAD_TIED, 0.8f, 1.4f); // sizzle-ish
+                player.getWorld().playSound(loc, Sound.ITEM_LEAD_TIED, 0.8f, 1.4f);
             }, 4L);
 
             return;

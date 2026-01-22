@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -83,12 +84,19 @@ public class CocaineCropManager implements Listener {
         Block clicked = event.getClickedBlock();
         if (clicked == null) return;
 
+        // Prevent coca seeds from behaving like vanilla wheat seeds on farmland.
+        ItemStack item = event.getItem();
+        if (ItemUtil.isCustomItem(item, "coca_seeds") && clicked.getType() == Material.FARMLAND) {
+            event.setCancelled(true);
+            return;
+        }
+
+        // Continue with custom planting rules below.
+
         if (!VALID_SOIL.contains(clicked.getType())) return;
 
         Block above = clicked.getRelative(BlockFace.UP);
         if (above.getType() != Material.AIR) return;
-
-        ItemStack item = event.getItem();
         if (!ItemUtil.isCustomItem(item, "coca_seeds")) return;
 
         above.setType(CROP_BLOCK);
@@ -137,7 +145,7 @@ public class CocaineCropManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         if (block.getType() != CROP_BLOCK) return;

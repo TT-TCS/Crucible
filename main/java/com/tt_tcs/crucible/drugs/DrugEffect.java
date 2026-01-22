@@ -2,7 +2,9 @@ package com.tt_tcs.crucible.drugs;
 
 import com.tt_tcs.crucible.CrucibleMain;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -257,6 +259,9 @@ public static double getTolerance(Player player, DrugType type) {
             if (extraTicks > 0) player.getPersistentDataContainer().set(MCAT_CRASH_EXTRA_TICKS_KEY, PersistentDataType.INTEGER, 0);
 
             int totalCrash = crashTicks + extraTicks;
+
+            Location loc = player.getLocation().add(0, 1.0, 0);
+            player.getWorld().playSound(loc, Sound.BLOCK_FIREFLY_BUSH_IDLE, 1.0f, 0.6f);
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, totalCrash, 2, true, true, true)); // Slowness III
             player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, totalCrash, 2, true, true, true));   // Hunger III
