@@ -123,10 +123,10 @@ public class ChemicalProcessorManager implements Listener {
         ));
     
         // White Methamphetamine -> Methcathinone
-        RECIPES.put("methcathinone_sugar_processing", new ChemicalRecipe(
-                "methcathinone_sugar_processing",
+        RECIPES.put("methcathinone_processing", new ChemicalRecipe(
+                "methcathinone_processing",
                 3,
-                "methcathinone_sugar",
+                "methcathinone",
                 Map.of(
                         "white_meth", 1
                 )
@@ -142,7 +142,8 @@ public class ChemicalProcessorManager implements Listener {
             "cocaine",
             "white_meth",
             "blue_meth",
-            "psilocybe"
+            "psilocybe",
+            "methcathinone"
     );
 
     public ChemicalProcessorManager() {
