@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Crucible:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Bugfixes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/CocaineCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/CocaineCropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/master" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--follow-tags" />
+        <option name="title" value="Current Branch" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;TT-TCS&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TT-TCS/Crucible.git&quot;,
+    &quot;accountId&quot;: &quot;f1f77ebf-f4a0-449b-a8fb-b1ad84c2e562&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="38MB4YinZ0gcueRpswuKdNFA8Ve" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Run Server.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Maven.crucible [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.crucible [package].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Gamer/IdeaProjects/Crucible/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4045977&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="Run Server" type="Application" factoryName="Application" activateToolWindowBeforeRun="false">
+      <option name="MAIN_CLASS_NAME" value="io.papermc.paperclip.Paperclip" />
+      <module name="crucible" />
+      <option name="PROGRAM_PARAMETERS" value="--nogui" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Documents/paper1.21.11testserver" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean package" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Crucible:jar" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="" />
+      <created>1768599371620</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1768599371620</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Base files added">
+      <option name="closed" value="true" />
+      <created>1769083497670</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1769083497670</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added Methcathinone">
+      <option name="closed" value="true" />
+      <created>1769085747479</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1769085747479</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Bugfixes">
+      <option name="closed" value="true" />
+      <created>1769091081355</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1769091081355</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Base files added" />
+    <MESSAGE value="Added Methcathinone" />
+    <MESSAGE value="Bugfixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes" />
+  </component>
+</project>
