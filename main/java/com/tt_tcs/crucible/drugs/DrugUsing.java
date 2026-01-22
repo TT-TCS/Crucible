@@ -1,7 +1,9 @@
 package com.tt_tcs.crucible.drugs;
 
+import com.tt_tcs.crucible.CrucibleMain;
 import com.tt_tcs.crucible.crafting.DryingRackManager;
 import com.tt_tcs.crucible.util.ItemUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -14,6 +16,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -36,7 +41,22 @@ public class DrugUsing implements Listener {
         }
     }
 
-    /* ================================================== */
+    
+
+    // ==================== METHCATHINONE (SUGAR) DASH ====================
+    private final Map<UUID, Long> mcatChargeReadyAt = new HashMap<>();   // ms timestamp when charged (0 = not charged)
+    private final Map<UUID, Long> mcatCooldownUntil = new HashMap<>();   // ms timestamp when dash can be used again
+
+    private boolean isMcatCharged(Player player) {
+        Long t = mcatChargeReadyAt.get(player.getUniqueId());
+        return t != null && t > 0;
+    }
+
+    private void clearMcatCharge(Player player) {
+        mcatChargeReadyAt.remove(player.getUniqueId());
+    }
+
+/* ================================================== */
     /* COOLDOWN HELPERS                                   */
     /* ================================================== */
 
@@ -136,6 +156,23 @@ public class DrugUsing implements Listener {
                     player.getWorld().playSound(loc, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 1.2f);
                     DrugEffect.applyBlueMethEffects(player, quality);
                 }
+                else if ("mcat".equals(variant)) {
+                    player.getWorld().spawnParticle(
+                            Particle.DUST_COLOR_TRANSITION,
+                            loc,
+                            14,
+                            0.2, 0.2, 0.2,
+                            0.02,
+                            new Particle.DustTransition(
+                                    Color.fromRGB(255, 255, 255),
+                                    Color.fromRGB(240, 240, 240),
+                                    1.0f
+                            )
+                    );
+                    player.getWorld().playSound(loc, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 1.4f);
+                    DrugEffect.applyMethcathinoneEffects(player, quality);
+                }
+
             }
 
             case shrooms -> {
@@ -321,6 +358,12 @@ public class DrugUsing implements Listener {
             handleUse(event, player, item, DrugType.meth, "blue");
         }
 
+
+        // methcathinone (sugar)
+        else if (ItemUtil.isCustomItem(item, "methcathinone")) {
+            handleUse(event, player, item, DrugType.meth, "mcat");
+        }
+
         // shrooms
         else if (ItemUtil.isCustomItem(item, "dried_psilocybe_mushroom")) {
             handleUse(event, player, item, DrugType.shrooms, "dried");
@@ -348,6 +391,91 @@ public class DrugUsing implements Listener {
         useDrug(player, item, type, variant);
     }
 
+    
+
+    /* ================================================== */
+    /*              METHCATHINONE DASH                    */
+    /* ================================================== */
+
+    @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMcatSneak(PlayerToggleSneakEvent event) {
+        Player player = event.getPlayer();
+
+        if (!DrugEffect.isMethcathinoneSugarActive(player)) {
+            clearMcatCharge(player);
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        long cooldownUntil = mcatCooldownUntil.getOrDefault(player.getUniqueId(), 0L);
+
+        if (event.isSneaking()) {
+            if (now < cooldownUntil) return;
+
+            Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
+                if (!player.isOnline()) return;
+                if (!DrugEffect.isMethcathinoneSugarActive(player)) return;
+                if (!player.isSneaking()) return;
+
+                long cd = mcatCooldownUntil.getOrDefault(player.getUniqueId(), 0L);
+                if (System.currentTimeMillis() < cd) return;
+
+                mcatChargeReadyAt.put(player.getUniqueId(), System.currentTimeMillis());
+
+                Location loc = player.getLocation().add(0, 1.0, 0);
+                player.getWorld().spawnParticle(Particle.DUST, loc, 14, 0.25, 0.25, 0.25, 0.01,
+                        new Particle.DustOptions(Color.fromRGB(220, 220, 220), 1.2f));
+                player.getWorld().playSound(loc, Sound.ITEM_LEAD_TIED, 0.8f, 1.4f); // sizzle-ish
+            }, 4L);
+
+            return;
+        }
+
+        if (!isMcatCharged(player)) return;
+        if (now < cooldownUntil) {
+            clearMcatCharge(player);
+            return;
+        }
+
+        if (player.isOnGround()) {
+            clearMcatCharge(player);
+            return;
+        }
+
+        clearMcatCharge(player);
+
+        Vector dir = player.getLocation().getDirection().setY(0).normalize();
+        Vector vel = dir.multiply(1.55).setY(0.25);
+        player.setVelocity(vel);
+
+        Location loc = player.getLocation();
+        player.getWorld().playSound(loc, Sound.ENTITY_GOAT_LONG_JUMP, 1.0f, 1.1f);
+
+        new BukkitRunnable() {
+            int ticks = 0;
+            @Override
+            public void run() {
+                if (!player.isOnline()) { cancel(); return; }
+                Location l = player.getLocation().add(0, 0.9, 0);
+                player.getWorld().spawnParticle(Particle.CLOUD, l, 6, 0.15, 0.15, 0.15, 0.0);
+                ticks++;
+                if (ticks >= 8) cancel();
+            }
+        }.runTaskTimer(CrucibleMain.getInstance(), 0L, 1L);
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 3, 0, true, true, true));
+
+        mcatCooldownUntil.put(player.getUniqueId(), now + 5000L);
+        Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
+            if (!player.isOnline()) return;
+            if (!DrugEffect.isMethcathinoneSugarActive(player)) return;
+
+            Location readyLoc = player.getLocation().add(0, 1.0, 0);
+            player.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, readyLoc, 10, 0.25, 0.25, 0.25, 0.02);
+            player.getWorld().playSound(readyLoc, Sound.ENTITY_CHICKEN_EGG, 0.5f, 1.5f);
+        }, 20L * 5);
+    }
+
     /* ================================================== */
     /* PREVENT PLACING SHROOMS                            */
     /* ================================================== */
@@ -357,7 +485,6 @@ public class DrugUsing implements Listener {
         ItemStack item = event.getItemInHand();
         if (item == null) return;
 
-        // Prevent placing any custom items that use block materials (e.g. mushrooms).
         if (ItemUtil.getItemId(item) != null && item.getType().isBlock()) {
             event.setCancelled(true);
             event.getPlayer().sendActionBar("§cYou can't place that.");

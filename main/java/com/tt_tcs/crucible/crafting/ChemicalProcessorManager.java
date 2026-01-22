@@ -121,7 +121,18 @@ public class ChemicalProcessorManager implements Listener {
                         "aniline", 1
                 )
         ));
-    }
+    
+        // White Methamphetamine -> Methcathinone (Sugar)
+        RECIPES.put("methcathinone_sugar_processing", new ChemicalRecipe(
+                "methcathinone_sugar_processing",
+                3,
+                "methcathinone_sugar",
+                Map.of(
+                        "white_meth", 1
+                )
+        ));
+
+}
 
     private final Map<Location, ChemicalJob> jobs = new HashMap<>();
     private final Map<Location, Integer> soundTasks = new HashMap<>();

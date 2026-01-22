@@ -172,7 +172,16 @@ public class DrugItems {
             7107
     );
 
-    // ==================== PSILOCYBE (SHROOMS) ====================
+    
+    public static final ItemStack METHCATHINONE = ItemUtil.createCustomItem(
+            Material.SUGAR,
+            "§fMethcathinone",
+            "methcathinone",
+            "meth",
+            7108
+    );
+
+// ==================== PSILOCYBE (SHROOMS) ====================
 
     public static final ItemStack PSILOCYBE_SEEDS = ItemUtil.createCustomItem(
             Material.BEETROOT_SEEDS,
@@ -318,6 +327,7 @@ public class DrugItems {
             case "phosphorus_iodide" -> PHOSPHORUS_IODIDE.clone();
             case "white_meth" -> WHITE_METH.clone();
             case "blue_meth" -> BLUE_METH.clone();
+            case "methcathinone" -> METHCATHINONE.clone();
             case "psilocybe_extract" -> PSILOCYBE_EXTRACT.clone();
             case "psilocybe" -> PSILOCYBE.clone();
             case "psilocybe_seeds" -> PSILOCYBE_SEEDS.clone();
@@ -357,6 +367,7 @@ public class DrugItems {
             case "phosphorus_iodide" -> PHOSPHORUS_IODIDE.clone();
             case "white_meth" -> WHITE_METH.clone();
             case "blue_meth" -> BLUE_METH.clone();
+            case "methcathinone" -> METHCATHINONE.clone();
             case "psilocybe_seeds" -> PSILOCYBE_SEEDS.clone();
             case "psilocybe_mushroom" -> PSILOCYBE_MUSHROOM.clone();
             case "dried_psilocybe_mushroom" -> DRIED_PSILOCYBE_MUSHROOM.clone();

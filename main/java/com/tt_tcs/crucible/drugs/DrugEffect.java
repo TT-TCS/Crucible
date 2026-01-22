@@ -1,6 +1,7 @@
 package com.tt_tcs.crucible.drugs;
 
 import com.tt_tcs.crucible.CrucibleMain;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -12,6 +13,14 @@ public class DrugEffect {
 
     public static final NamespacedKey OVERDOSE_KEY =
             new NamespacedKey(CrucibleMain.getInstance(), "overdose_drug");
+
+
+
+    // Methcathinone (Sugar) state
+    public static final NamespacedKey MCAT_ACTIVE_UNTIL_KEY =
+            new NamespacedKey(CrucibleMain.getInstance(), "mcat_active_until");
+    public static final NamespacedKey MCAT_CRASH_EXTRA_TICKS_KEY =
+            new NamespacedKey(CrucibleMain.getInstance(), "mcat_crash_extra_ticks");
 
     public static void setOverdose(Player player, DrugType type) {
         player.getPersistentDataContainer().set(OVERDOSE_KEY, PersistentDataType.STRING, type.name());
@@ -81,7 +90,13 @@ public class DrugEffect {
         return null;
     }
 
-    public static double getTolerance(Player player, DrugType type) {
+    
+    public static boolean isMethcathinoneSugarActive(Player player) {
+        Long until = player.getPersistentDataContainer().get(MCAT_ACTIVE_UNTIL_KEY, PersistentDataType.LONG);
+        return until != null && until > System.currentTimeMillis();
+    }
+
+public static double getTolerance(Player player, DrugType type) {
         PersistentDataContainer data = player.getPersistentDataContainer();
         return data.getOrDefault(getToleranceKey(type), PersistentDataType.DOUBLE, 0.0);
     }
@@ -190,6 +205,64 @@ public class DrugEffect {
     }
 
 
+
+    
+    public static void applyMethcathinoneEffects(Player player, int quality) {
+        setTolerance(player, DrugType.meth, getTolerance(player, DrugType.meth) + 0.4);
+
+        float stars = quality / 2.0f; // 0-5
+        double qualityMultiplier = Math.min(1.0, Math.max(0.0, stars / 5.0));
+
+        int baseHighTicks = 20 * 60 * 8; // 8 min
+        int highTicks = (int) Math.max(20 * 30, baseHighTicks * qualityMultiplier); // min 30s
+
+        int baseCrashTicks = 20 * 60 * 2;
+        double crashMultiplier = 1.0 + (1.0 - qualityMultiplier) * 2.0;
+        int crashTicks = (int) Math.max(baseCrashTicks, baseCrashTicks * crashMultiplier);
+
+        int remainingCrash = 0;
+        PotionEffect slow = player.getPotionEffect(PotionEffectType.SLOWNESS);
+        if (slow != null && slow.getAmplifier() >= 2) remainingCrash = Math.max(remainingCrash, slow.getDuration());
+        PotionEffect hunger = player.getPotionEffect(PotionEffectType.HUNGER);
+        if (hunger != null && hunger.getAmplifier() >= 2) remainingCrash = Math.max(remainingCrash, hunger.getDuration());
+        PotionEffect weak = player.getPotionEffect(PotionEffectType.WEAKNESS);
+        if (weak != null && weak.getAmplifier() >= 1) remainingCrash = Math.max(remainingCrash, weak.getDuration());
+
+        if (remainingCrash > 0) {
+            Integer extra = player.getPersistentDataContainer().get(MCAT_CRASH_EXTRA_TICKS_KEY, PersistentDataType.INTEGER);
+            int newExtra = (extra == null ? 0 : extra) + remainingCrash;
+            player.getPersistentDataContainer().set(MCAT_CRASH_EXTRA_TICKS_KEY, PersistentDataType.INTEGER, newExtra);
+
+            player.removePotionEffect(PotionEffectType.SLOWNESS);
+            player.removePotionEffect(PotionEffectType.HUNGER);
+            player.removePotionEffect(PotionEffectType.WEAKNESS);
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, highTicks, 0, true, true, true));  // Speed I
+        player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, highTicks, 1, true, true, true)); // Hunger II
+
+        long expectedUntil = System.currentTimeMillis() + (highTicks * 50L);
+        player.getPersistentDataContainer().set(MCAT_ACTIVE_UNTIL_KEY, PersistentDataType.LONG, expectedUntil);
+
+        Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
+            if (!player.isOnline()) return;
+
+            Long until = player.getPersistentDataContainer().get(MCAT_ACTIVE_UNTIL_KEY, PersistentDataType.LONG);
+            if (until == null || until != expectedUntil) return; // refreshed/overwritten
+
+            player.getPersistentDataContainer().remove(MCAT_ACTIVE_UNTIL_KEY);
+
+            Integer extra = player.getPersistentDataContainer().get(MCAT_CRASH_EXTRA_TICKS_KEY, PersistentDataType.INTEGER);
+            int extraTicks = (extra == null ? 0 : extra);
+            if (extraTicks > 0) player.getPersistentDataContainer().set(MCAT_CRASH_EXTRA_TICKS_KEY, PersistentDataType.INTEGER, 0);
+
+            int totalCrash = crashTicks + extraTicks;
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, totalCrash, 2, true, true, true)); // Slowness III
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, totalCrash, 2, true, true, true));   // Hunger III
+            player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, totalCrash, 1, true, true, true)); // Weakness II
+        }, highTicks);
+    }
 
     public static void applyWhiteMethEffects(Player player, int quality) {
         double tolerance = getTolerance(player, DrugType.meth);
