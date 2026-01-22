@@ -470,7 +470,7 @@ private void handleUse(PlayerInteractEvent event, Player player, ItemStack item,
             }
         }.runTaskTimer(CrucibleMain.getInstance(), 0L, 1L);
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 3, 0, true, true, true));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 0, true, true, true));
 
         mcatCooldownUntil.put(player.getUniqueId(), now + 5000L);
         Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
