@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -41,7 +42,7 @@ public class DrugUsing implements Listener {
         }
     }
 
-    
+
 
     // ==================== METHCATHINONE (SUGAR) DASH ====================
     private final Map<UUID, Long> mcatChargeReadyAt = new HashMap<>();   // ms timestamp when charged (0 = not charged)
@@ -379,7 +380,13 @@ public class DrugUsing implements Listener {
         }
     }
 
-    private void handleUse(PlayerInteractEvent event, Player player, ItemStack item, DrugType type, String variant) {
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        DrugEffect.restoreMethcathinone(event.getPlayer());
+    }
+
+private void handleUse(PlayerInteractEvent event, Player player, ItemStack item, DrugType type, String variant) {
         if (isOnCooldown(player, type)) {
             long remaining = getRemainingCooldown(player, type);
             player.sendActionBar("§cYou can't use this for another " + ((remaining + 999) / 1000) + " second(s)!");
@@ -391,17 +398,17 @@ public class DrugUsing implements Listener {
         useDrug(player, item, type, variant);
     }
 
-    
+
 
     /* ================================================== */
-    /*              METHCATHINONE DASH                    */
+    /* METHCATHINONE (SUGAR) DASH                         */
     /* ================================================== */
 
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMcatSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (!DrugEffect.isMethcathinoneSugarActive(player)) {
+        if (!DrugEffect.isMethcathinoneActive(player)) {
             clearMcatCharge(player);
             return;
         }
@@ -414,7 +421,7 @@ public class DrugUsing implements Listener {
 
             Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
                 if (!player.isOnline()) return;
-                if (!DrugEffect.isMethcathinoneSugarActive(player)) return;
+                if (!DrugEffect.isMethcathinoneActive(player)) return;
                 if (!player.isSneaking()) return;
 
                 long cd = mcatCooldownUntil.getOrDefault(player.getUniqueId(), 0L);
@@ -425,7 +432,7 @@ public class DrugUsing implements Listener {
                 Location loc = player.getLocation().add(0, 1.0, 0);
                 player.getWorld().spawnParticle(Particle.DUST, loc, 14, 0.25, 0.25, 0.25, 0.01,
                         new Particle.DustOptions(Color.fromRGB(220, 220, 220), 1.2f));
-                player.getWorld().playSound(loc, Sound.ITEM_LEAD_TIED, 0.8f, 1.4f);
+                player.getWorld().playSound(loc, Sound.ITEM_LEAD_TIED, 1.5f, 1.4f);
             }, 4L);
 
             return;
@@ -468,11 +475,11 @@ public class DrugUsing implements Listener {
         mcatCooldownUntil.put(player.getUniqueId(), now + 5000L);
         Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
             if (!player.isOnline()) return;
-            if (!DrugEffect.isMethcathinoneSugarActive(player)) return;
+            if (!DrugEffect.isMethcathinoneActive(player)) return;
 
             Location readyLoc = player.getLocation().add(0, 1.0, 0);
             player.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, readyLoc, 10, 0.25, 0.25, 0.25, 0.02);
-            player.getWorld().playSound(readyLoc, Sound.ENTITY_CHICKEN_EGG, 0.5f, 1.5f);
+            player.getWorld().playSound(readyLoc, Sound.ENTITY_CHICKEN_EGG, 0.8f, 1.5f);
         }, 20L * 5);
     }
 
