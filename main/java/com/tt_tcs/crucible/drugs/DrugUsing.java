@@ -43,7 +43,7 @@ public class DrugUsing implements Listener {
 
     
 
-    // ==================== METHCATHINONE (SUGAR) DASH ====================
+    // ==================== METHCATHINONE DASH ====================
     private final Map<UUID, Long> mcatChargeReadyAt = new HashMap<>();   // ms timestamp when charged (0 = not charged)
     private final Map<UUID, Long> mcatCooldownUntil = new HashMap<>();   // ms timestamp when dash can be used again
 

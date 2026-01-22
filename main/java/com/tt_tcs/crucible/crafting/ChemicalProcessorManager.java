@@ -122,7 +122,7 @@ public class ChemicalProcessorManager implements Listener {
                 )
         ));
     
-        // White Methamphetamine -> Methcathinone (Sugar)
+        // White Methamphetamine -> Methcathinone
         RECIPES.put("methcathinone_sugar_processing", new ChemicalRecipe(
                 "methcathinone_sugar_processing",
                 3,

@@ -9,38 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Added Methcathinone">
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/CrucibleMain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/CraftingManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/DrugProcessingManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/DryingRackManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crops/CocaineCropManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crops/EphedraCropManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crops/PsilocybeCropManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crops/WeedCropManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugItems.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/MushroomHallucinationManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/CrucibleCommands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/CrucibleListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/DryingDataKeys.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/ItemKeys.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/ItemUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/ProcessingDataKeys.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/util/StopwatchManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/CrucibleMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/CrucibleMain.java" afterDir="false" />
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Bugfixes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/CocaineCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/CocaineCropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/EphedraCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/EphedraCropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/PsilocybeCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/PsilocybeCropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/WeedCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/WeedCropManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugItems.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/util/CrucibleListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/util/CrucibleListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +42,7 @@
         <option name="title" value="Current Branch" />
       </GitPushTagMode>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
@@ -88,29 +66,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Run Server.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Maven.crucible [clean,package].executor": "Run",
-    "Maven.crucible [package].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "C:/Users/Gamer/IdeaProjects/Crucible/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4045977",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Run Server.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Maven.crucible [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.crucible [package].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Gamer/IdeaProjects/Crucible/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4045977&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Run Server" type="Application" factoryName="Application" activateToolWindowBeforeRun="false">
       <option name="MAIN_CLASS_NAME" value="io.papermc.paperclip.Paperclip" />
@@ -150,12 +128,21 @@
       <option name="project" value="LOCAL" />
       <updated>1769085747479</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Bugfixes">
+      <option name="closed" value="true" />
+      <created>1769091081355</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1769091081355</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Base files added" />
     <MESSAGE value="Added Methcathinone" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Methcathinone" />
+    <MESSAGE value="Bugfixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes" />
   </component>
 </project>
