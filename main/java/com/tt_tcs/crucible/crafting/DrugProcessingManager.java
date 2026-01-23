@@ -376,10 +376,8 @@ public class DrugProcessingManager implements Listener {
         if (itemId == null && held.getType() == Material.WATER_BUCKET) {
             itemId = "water_bucket";
         }
-
-        // vanilla lapis (used for blue meth)
-        if (itemId == null && held.getType() == Material.LAPIS_LAZULI) {
-            itemId = "lapis_lazuli";
+        if (itemId == null && held.getType() == Material.PRISMARINE_SHARD) {
+            itemId = "prismarine_shard";
         }
 
         String displayName = getItemDisplayName(held);
