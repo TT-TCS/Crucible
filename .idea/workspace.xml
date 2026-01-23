@@ -9,8 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Bugfixes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Fixed UpdateChecker.java">
+      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,13 +143,22 @@
       <option name="project" value="LOCAL" />
       <updated>1769095146800</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed UpdateChecker.java">
+      <option name="closed" value="true" />
+      <created>1769108103675</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1769108103675</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Base files added" />
     <MESSAGE value="Added Methcathinone" />
     <MESSAGE value="Bugfixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes" />
+    <MESSAGE value="Fixed UpdateChecker.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed UpdateChecker.java" />
   </component>
 </project>
