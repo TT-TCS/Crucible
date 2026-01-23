@@ -9,8 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Fixed UpdateChecker.java">
-      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Updated version">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/ChemicalProcessorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/CraftingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/CraftingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/DrugProcessingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/DrugProcessingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/DryingRackManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crafting/DryingRackManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/EphedraCropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/crops/EphedraCropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugUsing.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769108103675</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Updated version">
+      <option name="closed" value="true" />
+      <created>1769166687984</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1769166687984</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -159,6 +174,7 @@
     <MESSAGE value="Added Methcathinone" />
     <MESSAGE value="Bugfixes" />
     <MESSAGE value="Fixed UpdateChecker.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed UpdateChecker.java" />
+    <MESSAGE value="Updated version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated version" />
   </component>
 </project>
