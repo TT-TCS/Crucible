@@ -9,8 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Fixed UpdateChecker.java">
-      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Bugfixes&#10;Methcathione applies resistance during dash">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +152,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769108103675</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Updated version">
+      <option name="closed" value="true" />
+      <created>1769166687984</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1769166687984</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Bugfixes&#10;Methcathione applies resistance during dash">
+      <option name="closed" value="true" />
+      <created>1769181228200</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1769181228200</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -159,6 +176,8 @@
     <MESSAGE value="Added Methcathinone" />
     <MESSAGE value="Bugfixes" />
     <MESSAGE value="Fixed UpdateChecker.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed UpdateChecker.java" />
+    <MESSAGE value="Updated version" />
+    <MESSAGE value="Bugfixes&#10;Methcathione applies resistance during dash" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes&#10;Methcathione applies resistance during dash" />
   </component>
 </project>
