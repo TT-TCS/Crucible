@@ -27,15 +27,21 @@ import org.slf4j.ILoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.inventory.Inventory;
 
 public class CraftingManager implements Listener {
 
     private final Set<NamespacedKey> customRecipeKeys = new HashSet<>();
 
+    /**
+     * Items that should NOT be allowed into any furnace-like smelting slot.
+     * (Prevents fuel-wasting loops where the smelt is cancelled and the item remains.)
+     */
     private boolean isBlockedCocaItem(ItemStack stack) {
         if (stack == null || stack.getType() == Material.AIR) return false;
         String id = ItemUtil.getItemId(stack);
-        return "coca_leaf".equals(id) || "dried_coca_leaf".equals(id);
+        return "coca_leaf".equals(id) || "dried_coca_leaf".equals(id) || "weed_leaf".equals(id);
     }
 
     private boolean isFurnaceLikeInventory(org.bukkit.inventory.Inventory inv) {
@@ -212,18 +218,57 @@ public class CraftingManager implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceInventoryClick(InventoryClickEvent event) {
-        if (!isFurnaceLikeInventory(event.getInventory())) return;
+        // Use the TOP inventory so we also catch shift-clicks from the player inventory into the furnace.
+        Inventory top = event.getView().getTopInventory();
+        if (!isFurnaceLikeInventory(top)) return;
 
-        // In furnace-like inventories, raw slot 0 is the smelting/input slot.
-        if (event.getRawSlot() != 0) return;
+        int rawSlot = event.getRawSlot();
+        boolean clickingTop = rawSlot >= 0 && rawSlot < top.getSize();
 
-        ItemStack cursor = event.getCursor();
-        ItemStack current = event.getCurrentItem();
-
-        if (isBlockedCocaItem(cursor) || isBlockedCocaItem(current)) {
-            event.setCancelled(true);
+        // Shift-click from the player inventory INTO the furnace: block moving coca/weed leaves into the input slot.
+        if (event.isShiftClick() && !clickingTop) {
+            ItemStack moving = event.getCurrentItem();
+            if (isBlockedCocaItem(moving)) {
+                event.setCancelled(true);
+            }
+            return;
         }
+
+        // Only care about the furnace input/smelting slot (raw slot 0 in the top inventory).
+        if (!clickingTop || rawSlot != 0) return;
+
+        InventoryAction action = event.getAction();
+
+        // Block placing coca/weed leaves into slot 0 via cursor placement.
+        ItemStack cursor = event.getCursor();
+        if (isBlockedCocaItem(cursor)) {
+            switch (action) {
+                case PLACE_ALL:
+                case PLACE_ONE:
+                case PLACE_SOME:
+                case SWAP_WITH_CURSOR:
+                case COLLECT_TO_CURSOR:
+                    event.setCancelled(true);
+                    return;
+                default:
+                    break;
+            }
+        }
+
+        // Block number-key / hotbar swaps that would put a blocked item into slot 0.
+        if (action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD) {
+            int btn = event.getHotbarButton();
+            if (btn >= 0) {
+                ItemStack hotbarItem = event.getWhoClicked().getInventory().getItem(btn);
+                if (isBlockedCocaItem(hotbarItem)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+
+        // IMPORTANT: Do NOT cancel when the blocked item is already in the slot and the player is taking it out.
     }
+
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceInventoryDrag(InventoryDragEvent event) {
@@ -377,17 +422,11 @@ public class CraftingManager implements Listener {
                 }
             }
 
+            // Weed leaf should NEVER be smeltable (only regular ferns -> weed seeds).
+            // If it ends up in any furnace-like block, cancel the smelt to avoid producing items.
             if (itemId.equals("weed_leaf")) {
-                if (isSmoker) {
-                    ItemStack bud = DrugItems.WEED_BUD.clone();
-                    ItemUtil.setQuality(bud, ItemUtil.getQuality(input));
-                    event.setResult(bud);
-                    return;
-                } else {
-                    event.setCancelled(true);
-
-                    return;
-                }
+                event.setCancelled(true);
+                return;
             }
             if (itemId.equals("coca_leaf") || itemId.equals("dried_coca_leaf")) {
                 event.setCancelled(true);

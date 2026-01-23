@@ -268,8 +268,6 @@ public static double getTolerance(Player player, DrugType type) {
 
     
     public static void applyMethcathinoneEffects(Player player, int quality) {
-        setTolerance(player, DrugType.meth, getTolerance(player, DrugType.meth) + 0.4);
-
         float stars = quality / 2.0f; // 0-5
         double qualityMultiplier = Math.min(1.0, Math.max(0.0, stars / 5.0));
 

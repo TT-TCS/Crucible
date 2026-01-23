@@ -440,9 +440,9 @@ public class DryingRackManager implements Listener {
 
             if (dried) {
                 out = DrugItems.getById(recipe.outputId).clone();
-                int over = elapsedMinutes - recipe.idealMinutes;
-                double decay = Math.max(0.0, 1.0 - (over * 0.05));
-                int q = (int) Math.round(baseQuality * decay);
+                int over = Math.max(0, elapsedMinutes - recipe.idealMinutes);
+                // More noticeable quality loss: 0.5★ (1 half-star) per minute off.
+                int q = Math.max(0, baseQuality - over);
                 if (ItemUtil.supportsQuality(out)) {
                     ItemUtil.setQuality(out, q);
                 }
@@ -452,9 +452,9 @@ public class DryingRackManager implements Listener {
                 out = inputItem.clone();
 
                 if (ItemUtil.supportsQuality(out)) {
-                    int under = recipe.idealMinutes - elapsedMinutes;
-                    double decay = Math.max(0.0, 1.0 - (under * 0.05));
-                    int q = (int) Math.round(baseQuality * decay);
+                    int under = Math.max(0, recipe.idealMinutes - elapsedMinutes);
+                    // More noticeable quality loss: 0.5★ (1 half-star) per minute off.
+                    int q = Math.max(0, baseQuality - under);
                     ItemUtil.setQuality(out, q);
                 }
                 ItemUtil.setMinutes(out, elapsedMinutes, recipe.idealMinutes, false);

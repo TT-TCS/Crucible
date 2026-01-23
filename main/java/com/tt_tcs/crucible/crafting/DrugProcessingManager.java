@@ -377,6 +377,11 @@ public class DrugProcessingManager implements Listener {
             itemId = "water_bucket";
         }
 
+        // vanilla lapis (used for blue meth)
+        if (itemId == null && held.getType() == Material.LAPIS_LAZULI) {
+            itemId = "lapis_lazuli";
+        }
+
         String displayName = getItemDisplayName(held);
 
         if (itemId == null) return;
@@ -426,6 +431,8 @@ public class DrugProcessingManager implements Listener {
                 return "Redstone";
             } else if (item.getType() == Material.WATER_BUCKET) {
                 return "Water Bucket";
+            } else if (item.getType() == Material.LAPIS_LAZULI) {
+                return "Lapis Lazuli";
             }
         }
 
@@ -528,11 +535,15 @@ public class DrugProcessingManager implements Listener {
 
         final int calcQuality;
 
-        IngredientEntry(String itemId, int storedQuality, boolean hadQuality, int calcQuality) {
+        // Snapshot of the exact item that was inserted (keeps full lore + PDC when withdrawing)
+        final ItemStack originalItem;
+
+        IngredientEntry(String itemId, int storedQuality, boolean hadQuality, int calcQuality, ItemStack originalItem) {
             this.itemId = itemId;
             this.storedQuality = storedQuality;
             this.hadQuality = hadQuality;
             this.calcQuality = calcQuality;
+            this.originalItem = originalItem;
         }
     }
 
@@ -560,6 +571,9 @@ public class DrugProcessingManager implements Listener {
         private int ingredientQualityStars = 0;
 
         private int lastSmokeSecond = -1;
+
+        // Used to keep output quality/minutes updated even after "ready" (over/under processing)
+        private long lastOutputCalcMillis = 0L;
 
         ProcessingJob(Location base) {
             this.base = base;
@@ -590,11 +604,28 @@ public class DrugProcessingManager implements Listener {
             machineConfig.set(path + ".processedMinutes", processedMinutes);
             machineConfig.set(path + ".ingredientQualityStars", ingredientQualityStars);
 
+            // Legacy string list (kept for backwards compatibility)
             List<String> list = new ArrayList<>();
             for (IngredientEntry e : ingredientList) {
                 list.add(e.itemId + ":" + e.storedQuality + ":" + (e.hadQuality ? 1 : 0));
             }
             machineConfig.set(path + ".ingredients", list);
+
+            // Full item snapshots so withdrawals keep full lore + PDC (e.g. ingredient lore)
+            List<Map<String, Object>> entryData = new ArrayList<>();
+            for (IngredientEntry e : ingredientList) {
+                Map<String, Object> m = new HashMap<>();
+                m.put("id", e.itemId);
+                m.put("storedQuality", e.storedQuality);
+                m.put("hadQuality", e.hadQuality);
+                if (e.originalItem != null) {
+                    ItemStack snap = e.originalItem.clone();
+                    snap.setAmount(1);
+                    m.put("item", snap);
+                }
+                entryData.add(m);
+            }
+            machineConfig.set(path + ".ingredientEntries", entryData);
 
             saveMachineFile();
         }
@@ -615,23 +646,59 @@ public class DrugProcessingManager implements Listener {
             processedMinutes = machineConfig.getInt(path + ".processedMinutes");
             ingredientQualityStars = machineConfig.getInt(path + ".ingredientQualityStars");
 
-            List<String> ingredientStrings = machineConfig.getStringList(path + ".ingredients");
-            for (String s : ingredientStrings) {
-                String[] split = s.split(":");
-                String id = split[0];
-                int stored = split.length > 1 ? Integer.parseInt(split[1]) : 0;
-                boolean had;
+            // Prefer the newer persisted format (full item snapshots)
+            if (machineConfig.isList(path + ".ingredientEntries")) {
+                List<Map<?, ?>> entries = machineConfig.getMapList(path + ".ingredientEntries");
+                for (Map<?, ?> raw : entries) {
+                    if (raw == null) continue;
 
-                if (split.length >= 3) {
-                    had = "1".equals(split[2]) || "true".equalsIgnoreCase(split[2]);
-                } else {
-                    had = stored > 0;
+                    String id = raw.get("id") == null ? null : String.valueOf(raw.get("id"));
+                    if (id == null) continue;
+
+                    int stored = 0;
+                    boolean had = false;
+                    Object storedObj = raw.get("storedQuality");
+                    if (storedObj instanceof Number n) stored = n.intValue();
+                    else if (storedObj != null) {
+                        try { stored = Integer.parseInt(String.valueOf(storedObj)); } catch (Exception ignored) {}
+                    }
+
+                    Object hadObj = raw.get("hadQuality");
+                    if (hadObj instanceof Boolean b) had = b;
+                    else if (hadObj != null) had = "1".equals(String.valueOf(hadObj)) || "true".equalsIgnoreCase(String.valueOf(hadObj));
+
+                    int calc = had ? stored : 10;
+
+                    ItemStack snap = null;
+                    Object itemObj = raw.get("item");
+                    if (itemObj instanceof ItemStack is) {
+                        snap = is.clone();
+                        snap.setAmount(1);
+                    }
+
+                    ingredients.put(id, ingredients.getOrDefault(id, 0) + 1);
+                    ingredientList.add(new IngredientEntry(id, stored, had, calc, snap));
                 }
+            } else {
+                // Legacy format
+                List<String> ingredientStrings = machineConfig.getStringList(path + ".ingredients");
+                for (String s : ingredientStrings) {
+                    String[] split = s.split(":");
+                    String id = split[0];
+                    int stored = split.length > 1 ? Integer.parseInt(split[1]) : 0;
+                    boolean had;
 
-                int calc = had ? stored : 5;
+                    if (split.length >= 3) {
+                        had = "1".equals(split[2]) || "true".equalsIgnoreCase(split[2]);
+                    } else {
+                        had = stored > 0;
+                    }
 
-                ingredients.put(id, ingredients.getOrDefault(id, 0) + 1);
-                ingredientList.add(new IngredientEntry(id, stored, had, calc));
+                    int calc = had ? stored : 10;
+
+                    ingredients.put(id, ingredients.getOrDefault(id, 0) + 1);
+                    ingredientList.add(new IngredientEntry(id, stored, had, calc, null));
+                }
             }
         }
 
@@ -657,6 +724,26 @@ public class DrugProcessingManager implements Listener {
 
             IngredientEntry last = ingredientList.remove(ingredientList.size() - 1);
 
+            // Prefer returning the exact original item (keeps full lore + PDC)
+            if (last.originalItem != null) {
+                ItemStack ret = last.originalItem.clone();
+                ret.setAmount(1);
+                // Update ingredient counts/reset timers below, then return
+                String itemId = last.itemId;
+                ingredients.put(itemId, ingredients.get(itemId) - 1);
+                if (ingredients.get(itemId) <= 0) {
+                    ingredients.remove(itemId);
+                }
+
+                if (ingredients.isEmpty()) {
+                    drugId = null;
+                    idealMinutes = 0;
+                }
+
+                startTime = System.currentTimeMillis();
+                save();
+                return ret;
+            }
             String itemId = last.itemId;
             int storedQuality = last.storedQuality;
             boolean hadQuality = last.hadQuality;
@@ -701,7 +788,7 @@ public class DrugProcessingManager implements Listener {
         }
 
         void tick() {
-            if (ready || ingredients.isEmpty()) return;
+            if (ingredients.isEmpty()) return;
 
             double elapsed = getElapsedSeconds();
 
@@ -751,8 +838,14 @@ public class DrugProcessingManager implements Listener {
             double lockedMinutes = getLockedMinutes();
             if (lockedMinutes >= idealMinutes) {
                 ready = true;
+            }
+
+            // Keep recalculating output so minutes/quality continue to change if left running.
+            // (Fixes "stops at ideal minutes" issue.)
+            long now = System.currentTimeMillis();
+            if (now - lastOutputCalcMillis >= 1000L) {
+                lastOutputCalcMillis = now;
                 calculateOutput();
-                save();
             }
         }
 
@@ -775,7 +868,11 @@ public class DrugProcessingManager implements Listener {
 
             int calcQuality = hadQuality ? storedQuality : 10;
 
-            ingredientList.add(new IngredientEntry(itemId, storedQuality, hadQuality, calcQuality));
+            // Save an exact snapshot of the item before we decrement it
+            ItemStack snapshot = held.clone();
+            snapshot.setAmount(1);
+
+            ingredientList.add(new IngredientEntry(itemId, storedQuality, hadQuality, calcQuality, snapshot));
 
             held.setAmount(held.getAmount() - 1);
 
