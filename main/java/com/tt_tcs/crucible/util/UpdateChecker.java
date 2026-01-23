@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,12 +17,17 @@ public final class UpdateChecker {
     private static final String API_LATEST = "https://api.github.com/repos/TT-TCS/Crucible/releases/latest";
     private static final String RELEASES_PAGE = "https://github.com/TT-TCS/Crucible/releases";
 
-    private volatile boolean checked = false;
+    private final AtomicBoolean checked = new AtomicBoolean(false);
+    private final AtomicBoolean notified = new AtomicBoolean(false);
+
     private volatile String latestTag = null;
     private volatile String latestUrl = null;
 
+    /**
+     * Performs the GitHub check ONCE per runtime.
+     */
     public void checkAsync(JavaPlugin plugin) {
-        if (checked) return;
+        if (checked.get()) return;
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
@@ -34,7 +40,7 @@ public final class UpdateChecker {
 
                 int code = conn.getResponseCode();
                 if (code < 200 || code >= 300) {
-                    checked = true;
+                    checked.set(true);
                     return;
                 }
 
@@ -44,27 +50,35 @@ public final class UpdateChecker {
                     String line;
                     while ((line = br.readLine()) != null) sb.append(line);
                 }
-                String json = sb.toString();
 
+                String json = sb.toString();
                 latestTag = match(json, "\"tag_name\"\\s*:\\s*\"([^\"]+)\"");
                 latestUrl = match(json, "\"html_url\"\\s*:\\s*\"([^\"]+)\"");
-
-                checked = true;
             } catch (Exception ignored) {
-                checked = true;
+                // silent fail – never spam console or chat
+            } finally {
+                checked.set(true);
             }
         });
     }
 
-    private static String match(String src, String regex) {
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(src);
-        return m.find() ? m.group(1) : null;
+    /**
+     * Returns true ONLY ONCE if:
+     * - update check finished
+     * - an update exists
+     * - no admin has been notified yet
+     */
+    public boolean shouldNotify(JavaPlugin plugin) {
+        if (!checked.get()) return false;
+        if (latestTag == null) return false;
+
+        if (!hasUpdate(plugin)) return false;
+
+        // atomic: only one caller ever gets true
+        return notified.compareAndSet(false, true);
     }
 
     public boolean hasUpdate(JavaPlugin plugin) {
-        if (!checked || latestTag == null) return false;
-
         int[] current = parseSemver(normalize(plugin.getDescription().getVersion()));
         int[] latest = parseSemver(normalize(latestTag));
 
@@ -73,6 +87,12 @@ public final class UpdateChecker {
         if (latest[0] != current[0]) return latest[0] > current[0];
         if (latest[1] != current[1]) return latest[1] > current[1];
         return latest[2] > current[2];
+    }
+
+    private static String match(String src, String regex) {
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(src);
+        return m.find() ? m.group(1) : null;
     }
 
     private static String normalize(String v) {
