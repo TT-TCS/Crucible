@@ -146,6 +146,16 @@ public class ChemicalProcessorManager implements Listener {
             "methcathinone"
     );
 
+    // Some bag-required outputs had an unintended quality nerf. Keep the bag requirement,
+    // but only apply the "bag penalty" where it was actually intended.
+    private static final Set<String> BAG_QUALITY_PENALTY_OUTPUTS = Set.of(
+            "fentanyl",
+            "cocaine",
+            "white_meth",
+            "blue_meth",
+            "psilocybe"
+    );
+
     public ChemicalProcessorManager() {
         initStorage();
         loadMachines();
@@ -908,7 +918,7 @@ public class ChemicalProcessorManager implements Listener {
                 int ingredientQualityStars = calculateIngredientQualityStars(ingredientList);
                 int processedQuality = calculateProcessedQuality(ingredientQualityStars, processedMinutes, recipe.idealMinutes);
 
-                    if (BAG_REQUIRED_OUTPUTS.contains(recipe.outputItemId)) {
+                if (BAG_QUALITY_PENALTY_OUTPUTS.contains(recipe.outputItemId)) {
                         processedQuality = Math.max(0, processedQuality - 4);
                     }
 
@@ -1000,7 +1010,7 @@ public class ChemicalProcessorManager implements Listener {
                     int ingredientQualityStars = calculateIngredientQualityStars(ingredientList);
                     int processedQuality = calculateProcessedQuality(ingredientQualityStars, processedMinutes, recipe.idealMinutes);
 
-                    if (BAG_REQUIRED_OUTPUTS.contains(recipe.outputItemId)) {
+                    if (BAG_QUALITY_PENALTY_OUTPUTS.contains(recipe.outputItemId)) {
                         processedQuality = Math.max(0, processedQuality - 4);
                     }
 

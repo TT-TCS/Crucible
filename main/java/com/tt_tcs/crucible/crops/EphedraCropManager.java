@@ -22,7 +22,8 @@ import java.util.Set;
 public class EphedraCropManager implements Listener {
 
     private static final Material CROP_BLOCK = Material.SUGAR_CANE;
-    private static final Set<Material> VALID_SOIL = Set.of(Material.SAND, Material.RED_SAND);
+    // Ephedra should only grow on RED_SAND (regular sugar cane should remain usable on SAND)
+    private static final Set<Material> VALID_SOIL = Set.of(Material.RED_SAND);
 
     @EventHandler
     public void onPlant(PlayerInteractEvent event) {
@@ -56,19 +57,18 @@ public class EphedraCropManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onVanillaSugarCanePlacement(BlockPlaceEvent event) {
+        // Vanilla sugar cane should NOT be placeable on RED_SAND.
+        // (Ephedra uses the same block type but is planted via our custom right-click handler.)
         Block placed = event.getBlock();
         if (placed.getType() != CROP_BLOCK) return;
 
-        Block below = placed.getRelative(BlockFace.DOWN);
-        if (below.getType() != CROP_BLOCK) return;
-
-        Block base = getBase(below);
+        Block base = getBase(placed);
         if (base == null) return;
 
         Block soil = base.getRelative(BlockFace.DOWN);
-        if (!VALID_SOIL.contains(soil.getType())) return;
-
-        event.setCancelled(true);
+        if (VALID_SOIL.contains(soil.getType())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

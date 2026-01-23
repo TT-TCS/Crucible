@@ -48,6 +48,9 @@ public class DrugUsing implements Listener {
     private final Map<UUID, Long> mcatChargeReadyAt = new HashMap<>();   // ms timestamp when charged (0 = not charged)
     private final Map<UUID, Long> mcatCooldownUntil = new HashMap<>();   // ms timestamp when dash can be used again
 
+    // Dash trail task (particles + resistance) per player
+    private final Map<UUID, BukkitRunnable> mcatDashTrailTasks = new HashMap<>();
+
     private boolean isMcatCharged(Player player) {
         Long t = mcatChargeReadyAt.get(player.getUniqueId());
         return t != null && t > 0;
@@ -321,23 +324,17 @@ public class DrugUsing implements Listener {
 
     @EventHandler
     public void onUseDrug(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR &&
-                event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        // Drugs should ONLY be usable when right clicking AIR.
+        // This prevents accidental consumption while interacting with machines/blocks.
+        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         ItemStack item = event.getItem();
         if (item == null) return;
 
         Player player = event.getPlayer();
 
+        // (clicked block is always null for RIGHT_CLICK_AIR, but keep logic future-proof)
         Block clicked = event.getClickedBlock();
-
-        if (isClickingDryingRack(event, clicked)) {
-            return;
-        }
-
-        if (isClickingGrindingPress(event, clicked)) {
-            return;
-        }
 
         // weed
         if (ItemUtil.isCustomItem(item, "joint")) {
@@ -458,19 +455,55 @@ private void handleUse(PlayerInteractEvent event, Player player, ItemStack item,
         Location loc = player.getLocation();
         player.getWorld().playSound(loc, Sound.ENTITY_GOAT_LONG_JUMP, 1.0f, 1.1f);
 
-        new BukkitRunnable() {
-            int ticks = 0;
+        
+        // Cancel any existing trail task (shouldn't happen, but keeps things tidy)
+        BukkitRunnable existingTrail = mcatDashTrailTasks.remove(player.getUniqueId());
+        if (existingTrail != null) existingTrail.cancel();
+
+        BukkitRunnable trailTask = new BukkitRunnable() {
+            boolean hasLeftGround = false;
+            boolean landed = false;
+            int postLandTicks = 10; // 0.5s = 10 ticks
+
             @Override
             public void run() {
                 if (!player.isOnline()) { cancel(); return; }
-                Location l = player.getLocation().add(0, 0.9, 0);
-                player.getWorld().spawnParticle(Particle.CLOUD, l, 6, 0.15, 0.15, 0.15, 0.0);
-                ticks++;
-                if (ticks >= 8) cancel();
-            }
-        }.runTaskTimer(CrucibleMain.getInstance(), 0L, 1L);
+                if (!DrugEffect.isMethcathinoneActive(player)) { cancel(); return; }
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 0, true, true, true));
+                boolean onGround = player.isOnGround();
+
+                if (!hasLeftGround) {
+                    if (!onGround) hasLeftGround = true;
+                } else if (!landed && onGround) {
+                    landed = true;
+                }
+
+                if (!landed || postLandTicks > 0) {
+                    Location l = player.getLocation().add(0, 0.9, 0);
+                    player.getWorld().spawnParticle(Particle.CLOUD, l, 6, 0.15, 0.15, 0.15, 0.0);
+
+                    PotionEffect current = player.getPotionEffect(PotionEffectType.RESISTANCE);
+                    if (current == null || current.getAmplifier() < 2 || current.getDuration() < 15) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 15, 2, true, true, true));
+                    }
+
+                    if (landed) postLandTicks--;
+                    return;
+                }
+
+                cancel();
+            }
+
+            @Override
+            public synchronized void cancel() throws IllegalStateException {
+                super.cancel();
+                mcatDashTrailTasks.remove(player.getUniqueId());
+            }
+        };
+
+        mcatDashTrailTasks.put(player.getUniqueId(), trailTask);
+        trailTask.runTaskTimer(CrucibleMain.getInstance(), 0L, 1L);
+player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 0, true, true, true));
 
         mcatCooldownUntil.put(player.getUniqueId(), now + 5000L);
         Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
