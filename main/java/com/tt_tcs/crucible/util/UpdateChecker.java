@@ -23,9 +23,6 @@ public final class UpdateChecker {
     private volatile String latestTag = null;
     private volatile String latestUrl = null;
 
-    /**
-     * Performs the GitHub check ONCE per runtime.
-     */
     public void checkAsync(JavaPlugin plugin) {
         if (checked.get()) return;
 
@@ -60,22 +57,6 @@ public final class UpdateChecker {
                 checked.set(true);
             }
         });
-    }
-
-    /**
-     * Returns true ONLY ONCE if:
-     * - update check finished
-     * - an update exists
-     * - no admin has been notified yet
-     */
-    public boolean shouldNotify(JavaPlugin plugin) {
-        if (!checked.get()) return false;
-        if (latestTag == null) return false;
-
-        if (!hasUpdate(plugin)) return false;
-
-        // atomic: only one caller ever gets true
-        return notified.compareAndSet(false, true);
     }
 
     public boolean hasUpdate(JavaPlugin plugin) {
@@ -126,9 +107,5 @@ public final class UpdateChecker {
 
     public String getUpdateUrl() {
         return latestUrl != null ? latestUrl : RELEASES_PAGE;
-    }
-
-    public String getReleasesPage() {
-        return RELEASES_PAGE;
     }
 }
