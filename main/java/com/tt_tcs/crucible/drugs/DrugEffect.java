@@ -406,10 +406,12 @@ public static void applyWhiteMethEffects(Player player, int quality) {
         if (tolerance < 0.5) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration, 1));
             player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, duration, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, (int) (duration*0.5), 1));
         }
 
         if (tolerance >= 0.5) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, (int) (duration*0.5), 0));
         }
 
         if (stars >= 4.0) {
