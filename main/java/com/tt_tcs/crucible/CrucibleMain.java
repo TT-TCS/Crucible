@@ -26,8 +26,6 @@ public final class CrucibleMain extends JavaPlugin {
     private DrugProcessingManager processingManager;
     private ChemicalProcessorManager chemicalProcessorManager;
 
-    
-    private final UpdateChecker updateChecker = new UpdateChecker();
 public void startToleranceDecay() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -60,12 +58,7 @@ public void startToleranceDecay() {
             getDataFolder().mkdirs();
         }
 
-        // Register event listeners
-        
-        // Check GitHub releases for updates (admins will be notified on join)
-        updateChecker.checkAsync(this);
-
-getServer().getPluginManager().registerEvents(new WeedCropManager(), this);
+        getServer().getPluginManager().registerEvents(new WeedCropManager(), this);
         getServer().getPluginManager().registerEvents(new CocaineCropManager(), this);
         getServer().getPluginManager().registerEvents(new EphedraCropManager(), this);
         getServer().getPluginManager().registerEvents(new PsilocybeCropManager(), this);
@@ -106,10 +99,6 @@ getServer().getPluginManager().registerEvents(new WeedCropManager(), this);
 
     public static CrucibleMain getInstance() {
         return instance;
-    }
-
-    public UpdateChecker getUpdateChecker() {
-        return updateChecker;
     }
 
 }
