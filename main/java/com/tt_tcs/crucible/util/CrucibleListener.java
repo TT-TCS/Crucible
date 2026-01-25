@@ -87,37 +87,9 @@ public class CrucibleListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player p = event.getPlayer();
-        Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> renderInventoryLoreFor(p), 1L);
-
-        // Admin-only update notice
-        Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
-            if (!(p.isOp() || p.hasPermission("crucible.admin") || p.hasPermission("crucible.update"))) return;
-            if (CrucibleMain.getInstance().getUpdateChecker().hasUpdate(CrucibleMain.getInstance())) {
-                String tag = CrucibleMain.getInstance().getUpdateChecker().getLatestTag();
-                String url = CrucibleMain.getInstance().getUpdateChecker().getUpdateUrl();
-                p.sendMessage("§6[Crucible] §eUpdate available" + (tag != null ? " (§f" + tag + "§e)" : "") + ".");
-                p.sendMessage("§6[Crucible] §eDownload: §b" + url);
-            }
-        }, 20L);
-    }
-
-    @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player p)) return;
         Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> renderInventoryLoreFor(p), 1L);
-
-        // Admin-only update notice
-        Bukkit.getScheduler().runTaskLater(CrucibleMain.getInstance(), () -> {
-            if (!(p.isOp() || p.hasPermission("crucible.admin") || p.hasPermission("crucible.update"))) return;
-            if (CrucibleMain.getInstance().getUpdateChecker().hasUpdate(CrucibleMain.getInstance())) {
-                String tag = CrucibleMain.getInstance().getUpdateChecker().getLatestTag();
-                String url = CrucibleMain.getInstance().getUpdateChecker().getUpdateUrl();
-                p.sendMessage("§6[Crucible] §eUpdate available" + (tag != null ? " (§f" + tag + "§e)" : "") + ".");
-                p.sendMessage("§6[Crucible] §eDownload: §b" + url);
-            }
-        }, 20L);
     }
 
     @EventHandler
