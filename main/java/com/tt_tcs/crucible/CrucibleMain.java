@@ -14,7 +14,6 @@ import com.tt_tcs.crucible.drugs.DrugUsing;
 import com.tt_tcs.crucible.util.CrucibleCommands;
 import com.tt_tcs.crucible.util.CrucibleListener;
 import com.tt_tcs.crucible.util.StopwatchManager;
-import com.tt_tcs.crucible.util.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
