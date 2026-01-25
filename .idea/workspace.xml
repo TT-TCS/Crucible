@@ -9,8 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Updated version">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/drugs/DrugEffect.java" afterDir="false" />
+    <list default="true" id="dbf1ca29-e24b-42dd-85b7-a6b360ca8f6f" name="Changes" comment="Buffed Blue Meth">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/CrucibleMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/com/tt_tcs/crucible/CrucibleMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src" beforeDir="false" afterPath="$PROJECT_DIR$/src" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/CrucibleMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/CrucibleMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tt_tcs/crucible/util/UpdateChecker.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769261808758</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Buffed Blue Meth">
+      <option name="closed" value="true" />
+      <created>1769263410359</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1769263410359</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -210,6 +222,7 @@
     <MESSAGE value="Fixed UpdateChecker.java" />
     <MESSAGE value="Bugfixes&#10;Methcathione applies resistance during dash" />
     <MESSAGE value="Updated version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated version" />
+    <MESSAGE value="Buffed Blue Meth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Buffed Blue Meth" />
   </component>
 </project>
